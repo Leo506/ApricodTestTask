@@ -9,5 +9,10 @@ public class GameMapping : Profile
     {
         CreateMap<GameModel, GameViewModel>()
             .ForMember(gvm => gvm.Genres, s => s.MapFrom(x => x.GenreArray));
+
+        CreateMap<GameViewModel, GameModel>()
+            .ForMember(d => d.Genres, s => s.Ignore())
+            .ForMember(d => d.GenreArray, s => s.MapFrom(x => x.Genres))
+            .ForMember(d => d.Id, s => s.Ignore());
     }
 }

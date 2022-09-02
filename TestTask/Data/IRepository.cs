@@ -8,7 +8,7 @@ public interface IRepository<T> : IDisposable where T : class
 
     Task<OperationResult<T>> GetAsync(int id);
 
-    Task<OperationResult> CreateAsync(T item);
+    Task<OperationResult<bool>> CreateAsync(T item);
 
     Task<OperationResult<bool>> UpdateAsync(T item);
 

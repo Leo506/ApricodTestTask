@@ -61,7 +61,7 @@ public class GameRepository : IRepository<GameModel>
         return result;
     }
 
-    public async Task<OperationResult> CreateAsync(GameModel item)
+    public async Task<OperationResult<bool>> CreateAsync(GameModel item)
     {
         var result = OperationResult.CreateResult<bool>();
 
