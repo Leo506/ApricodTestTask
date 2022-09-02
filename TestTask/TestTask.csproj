@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
+      <PackageReference Include="OperationResultCore" Version="4.0.0" />
     </ItemGroup>
 
 </Project>
