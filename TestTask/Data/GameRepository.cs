@@ -69,6 +69,7 @@ public class GameRepository : IRepository<GameModel>
         {
             _logger.LogInformation($"Creating new game");
             await _context.Games.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
         catch (Exception e)
         {
@@ -79,7 +80,7 @@ public class GameRepository : IRepository<GameModel>
         return result;
     }
 
-    public Task<OperationResult<bool>> UpdateAsync(GameModel item)
+    public async Task<OperationResult<bool>> UpdateAsync(GameModel item)
     {
         var result = OperationResult.CreateResult<bool>();
 
@@ -87,6 +88,7 @@ public class GameRepository : IRepository<GameModel>
         {
             _logger.LogInformation($"Updating game with id: {item.Id}");
             _context.Games.Update(item);
+            await _context.SaveChangesAsync();
         }
         catch (Exception e)
         {
@@ -94,10 +96,10 @@ public class GameRepository : IRepository<GameModel>
             result.AddError(e);
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 
-    public Task<OperationResult<bool>> DeleteAsync(GameModel item)
+    public async Task<OperationResult<bool>> DeleteAsync(GameModel item)
     {
         var result = OperationResult.CreateResult<bool>();
 
@@ -105,6 +107,7 @@ public class GameRepository : IRepository<GameModel>
         {
             _logger.LogInformation($"Deleting game with id: {item.Id}");
             _context.Games.Remove(item);
+            await _context.SaveChangesAsync();
         }
         catch (Exception e)
         {
@@ -112,6 +115,6 @@ public class GameRepository : IRepository<GameModel>
             result.AddError(e);
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 }
