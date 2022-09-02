@@ -1,7 +1,12 @@
+using TestTask.Data;
+using TestTask.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .Services.AddDbContext<GameDbContext>()
+    .AddScoped<IRepository<GameModel>, GameRepository>();
 
 var app = builder.Build();
 
@@ -17,8 +22,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
