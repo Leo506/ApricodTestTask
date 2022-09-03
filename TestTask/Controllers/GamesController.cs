@@ -24,23 +24,23 @@ public class GamesController : ControllerBase
     }
 
     
-    public async Task<ActionResult<IEnumerable<GameViewModel>>> GetAll()
+    public async Task<ActionResult<IEnumerable<GameViewModel>>> GetAllGames()
     {
-        _logger.LogInformation($"Get request to {nameof(Get)}");
+        _logger.LogInformation($"Get request to {nameof(GetAllGames)}");
         var getRecordsResult = await _repository.GetAllAsync();
         if (!getRecordsResult.Ok)
             return NoContent();
 
         var result = getRecordsResult.Result!.Select(g => _mapper.Map<GameViewModel>(g));
 
-        return CreatedAtAction(nameof(Get), result);
+        return CreatedAtAction(nameof(GetAllGames), result);
     }
 
     
     [HttpGet]
-    public async Task<ActionResult<GameViewModel>> Get(int id)
+    public async Task<ActionResult<GameViewModel>> GetGameById(int id)
     {
-        _logger.LogInformation($"Get request ti {nameof(Get)}");
+        _logger.LogInformation($"Get request ti {nameof(GetGameById)}");
 
         var getResult = await _repository.GetAsync(id);
         if (!getResult.Ok)
@@ -48,12 +48,12 @@ public class GamesController : ControllerBase
 
         var result = _mapper.Map<GameViewModel>(getResult.Result);
 
-        return CreatedAtAction(nameof(Get), result);
+        return CreatedAtAction(nameof(GetGameById), result);
     }
 
     
     [HttpPost]
-    public async Task<ActionResult> Post(GameViewModel gameViewModel)
+    public async Task<ActionResult> CreateGame(GameViewModel gameViewModel)
     {
         var gameModel = _mapper.Map<GameModel>(gameViewModel);
 
@@ -67,7 +67,7 @@ public class GamesController : ControllerBase
 
     
     [HttpDelete]
-    public async Task<ActionResult> Delete(int id)
+    public async Task<ActionResult> DeleteGame(int id)
     {
         var gettingResult = await _repository.GetAsync(id);
 
@@ -83,7 +83,7 @@ public class GamesController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult> Put(int id, GameViewModel gameViewModel)
+    public async Task<ActionResult> UpdateGame(int id, GameViewModel gameViewModel)
     {
         var gameModel = _mapper.Map<GameModel>(gameViewModel);
         gameModel.Id = id;
@@ -94,5 +94,22 @@ public class GamesController : ControllerBase
             return BadRequest();
 
         return Ok();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<GameViewModel>>> GetByGenre(string genre)
+    {
+        var gettingAllRecords = await _repository.GetAllAsync();
+
+        if (!gettingAllRecords.Ok)
+            return BadRequest();
+
+        if (gettingAllRecords.Result?.Count() == 0)
+            return NoContent();
+        
+        var result = gettingAllRecords.Result?.Where(g => g.GenreArray.Contains(genre))
+            .Select(g => _mapper.Map<GameViewModel>(g));
+
+        return CreatedAtAction(nameof(GetByGenre), result);
     }
 }
