@@ -40,7 +40,7 @@ public class GamesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<GameViewModel>> GetGameById(int id)
     {
-        _logger.LogInformation($"Get request ti {nameof(GetGameById)}");
+        _logger.LogInformation($"Get request to {nameof(GetGameById)}");
 
         var getResult = await _repository.GetAsync(id);
         if (!getResult.Ok)
